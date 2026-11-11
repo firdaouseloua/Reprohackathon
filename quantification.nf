@@ -13,7 +13,7 @@ process quantification {
     script:
 
     """
-    salmon quant -i ${salmon_index} -l A -1 ${reads[0]} -2 ${reads[1]} -p ${task.cpus} -o ${sample}_quant.txt
+    salmon quant -i ${salmon_index} -l A -1 ${reads[0]} -2 ${reads[1]} -p ${task.cpus} -o ${sample}_quant
     """
 }
 
