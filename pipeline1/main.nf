@@ -10,10 +10,8 @@ include { BOWTIE_ALIGN } from './modules/bowtie_align'
 workflow {
 
     genome = DOWNLOAD_REFERENCE()
-
-    index_files = BOWTIE_INDEX(genome)
-
+    index_dir = BOWTIE_INDEX(genome)
+    
     reads = Channel.fromPath(params.reads, checkIfExists: true)
-
-    BOWTIE_ALIGN(index_files, reads)
+    BOWTIE_ALIGN(index_dir, reads)
 }
