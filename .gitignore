@@ -1,0 +1,11 @@
+.nextflow*
+**/.nextflow*
+work/
+**/work/
+**/results/
+**/data/
+*.fastq
+*.fastq.gz
+*.sam
+*.bam
+*.ebwt
