@@ -1,6 +1,7 @@
-library(DESeq2)
+library(DESeq2) ###### Ajouter la version 1.16
 
 counts_file <- "counts.txt"
+#genes <- ## à lire avec genome.gff
 outdir <- "results/"
 dir.create(outdir)
 
@@ -36,13 +37,11 @@ ma_plot <- function(df, title) {
          col = c("red", "grey"), pch = 16, bty = "n")
 }
 
-# Fig. 3c : gènes de traduction (optionnel, 1 identifiant par ligne)
-if (length(args) >= 3) {
-  ids <- readLines(args[3])
-  png(file.path(outdir, "MAplot_translation.png"), width = 1800, height = 1400, res = 250)
-  ma_plot(res[rownames(res) %in% ids, ], "Translation-related genes")
-  dev.off()
-}
+# Fig. 3c : gènes de traduction
+#ids <- readLines(genes)
+#png(file.path(outdir, "MAplot_translation.png"), width = 1800, height = 1400, res = 250)
+#ma_plot(res[rownames(res) %in% ids, ], "Translation-related genes")
+#dev.off()
 
 # Supp. Fig. 3 : tous les gènes
 png(file.path(outdir, "MAplot_all.png"), width = 1800, height = 1400, res = 250)
