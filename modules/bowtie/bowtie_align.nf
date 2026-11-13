@@ -15,11 +15,11 @@ process BOWTIE_ALIGN {
     script:
     def name = metadata.new_name
     """
-    bowtie -p ${task.cpus} \\
-        -S \\
-        ${index_dir}/genome \\
-        ${trimmed_reads} \\
-        > ${name}.sam \\
-        2> ${name}.bowtie.log
+    zcat ${trimmed_reads} | bowtie -p ${task.cpus} \\
+                        -S \\
+                        ${index_dir}/genome \\
+                        ${trimmed_reads} \\
+                        > ${name}.sam \\
+                        2> ${name}.bowtie.log
     """
 }
