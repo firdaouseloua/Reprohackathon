@@ -1,5 +1,6 @@
 process FEATURECOUNT {
 
+    cpus 8
     container 'ottarein/featurecounts:1.4.6-p3'
 
     input:
@@ -13,6 +14,6 @@ process FEATURECOUNT {
     def name = metadata.new_name
 
     """
-    featureCounts -t exon -g ID -s 1 -F GTF -T $task.cpus -a ${gff} -o ${name}_count.txt $bam
+    featureCounts -t exon -g ID -s 1 -F GTF -T ${task.cpus} -a ${gff} -o ${name}_count.txt $bam
     """
 }

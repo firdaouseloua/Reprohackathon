@@ -1,5 +1,6 @@
 process BOWTIE_ALIGN {
 
+    cpus 8
     container 'ottarein/bowtie:0.12.7'
     publishDir "${params.outdir}/bw_mapping", mode: 'copy'
 
