@@ -18,7 +18,7 @@ process BOWTIE_ALIGN {
     zcat ${trimmed_reads} | bowtie -p ${task.cpus} \\
                         -S \\
                         ${index_dir}/genome \\
-                        ${trimmed_reads} \\
+                        - \\
                         > ${name}.sam \\
                         2> ${name}.bowtie.log
     """
