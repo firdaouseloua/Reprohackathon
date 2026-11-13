@@ -16,7 +16,7 @@ workflow {
     metadata = METADATA.out.metadata
         .splitCsv(header: true, sep: '\t', strip: true)
         .map { row -> row + [new_name: row.sample_description.replace(' ', '_')] }
-
+        .take(2)
     FASTQ(metadata)
     CUTADAPT(FASTQ.out.fastq)
     FASTQ.out.fastq
