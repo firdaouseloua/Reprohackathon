@@ -1,6 +1,7 @@
 process SAM_TO_BAM {
     cpus 4
     container 'ottarein/samtools:1.21'
+    publishDir "${params.outdir}/bam", mode: 'copy'
 
     input:
     tuple val(metadata), path(sam)
