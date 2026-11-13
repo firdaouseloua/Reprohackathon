@@ -20,9 +20,9 @@ workflow {
 
     FASTQ(metadata)
     CUTADAPT(FASTQ.out.fastq)
-    FASTQ.out.fastq.view()
-    // BOWTIE_ALIGN(BOWTIE_INDEX.out.index_dir, CUTADAPT.out.trimmed_reads)
-    // SAM_TO_BAM(BOWTIE_ALIGN.out.sam)
-    // FEATURECOUNT(DOWNLOAD_GENOME_ANN.out.annotation, SAM_TO_BAM.out.bam)
+    FASTQ.out.fastq
+    BOWTIE_ALIGN(BOWTIE_INDEX.out.index_dir, CUTADAPT.out.trimmed_reads)
+    SAM_TO_BAM(BOWTIE_ALIGN.out.sam)
+    FEATURECOUNT(DOWNLOAD_GENOME_ANN.out.annotation, SAM_TO_BAM.out.bam)
 
 }
