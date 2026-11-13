@@ -2,6 +2,7 @@ process FEATURECOUNT {
 
     cpus 8
     container 'ottarein/featurecounts:1.4.6-p3'
+    publishDir "${params.outdir}/featurecount", mode: 'copy'
 
     input:
     path gff
