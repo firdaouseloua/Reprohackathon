@@ -1,18 +1,18 @@
 process featureCount {
 
-    container https://zenodo.org/record/8037099/files/subread_2.0.3.img
+    container 'ottarein/featurecounts:1.4.6-p3'
 
     input:
-    path gtf
-    tuple (path bam, path metadata)
+    path gff
+    tuple val(metadata),path(bam)
     
     output:
-    tuple (path "*.txt", path metadata), emit: count_file
+    tuple val(metadata),path("*.txt"), emit: count_file
 
     script:
-    def sample = metadata.sample_name
+    def name = metadata.new_name
 
     """
-    featureCounts -t exon -g ID -s 1 -F GTF -T $task.cpus -a ${gtf} -o ${sample}_count.txt $bam
+    featureCounts -t exon -g ID -s 1 -F GTF -T ${task.cpus} -a ${gff} -o ${name}_count.txt $bam
     """
 }

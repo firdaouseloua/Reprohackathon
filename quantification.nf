@@ -1,6 +1,6 @@
 process quantification {
 
-    container 'https://zenodo.org/record/22118211/files/salmon_1.3.0-1.img'
+    container 'https://zenodo.org/record/22144681/files/salmon_1.2.0.img'
     cpus 16
 
     input:
