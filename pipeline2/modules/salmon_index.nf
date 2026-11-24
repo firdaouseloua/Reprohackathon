@@ -1,10 +1,12 @@
 process SALMON_INDEX {
 
+    set -euo pipefail
+
     tag "Mouse transcriptome - Salmon 1.2.0"
 
     container 'quay.io/biocontainers/salmon:1.2.0--hf69c8f4_0'
 
-    cpus 4
+    cpus { Math.min(4, params.cpu as int) }
     memory '8 GB'
 
     publishDir "${params.outdir}/index", mode: 'copy'
