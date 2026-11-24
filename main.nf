@@ -20,9 +20,11 @@ workflow {
         }
 
     // Small test runs before downloading the whole study
-    if (params.max_samples > 0) {
-        metadata = metadata.take(params.max_samples as int)
-    }
+    def sample_limit = params.max_samples.toString().toInteger()
+
+	if (sample_limit > 0) {
+		metadata = metadata.take(sample_limit)
+	}
 
     FASTQ(metadata)
     FASTQC(FASTQ.out.fastq)
