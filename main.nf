@@ -4,9 +4,8 @@ include { METADATA } from './modules/fastq-dl/metadata'
 include { CUTADAPT } from './modules/cutadapt/cutadapt'
 include { DOWNLOAD_GENOME_ANN } from './modules/download_genome_ann'
 include { BOWTIE_INDEX } from './modules/bowtie/bowtie_index'
-include { BOWTIE_ALIGN } from './modules/bowtie/bowtie_align'
+include { BOWTIE_ALIGN_BAM } from './modules/bowtie/bowtie_align_bam'
 include { FEATURECOUNT } from './modules/subread/featureCount'
-include { SAM_TO_BAM } from './modules/samtools/sam_to_bam'
 
 workflow {
 
@@ -16,13 +15,22 @@ workflow {
 
     metadata = METADATA.out.metadata
         .splitCsv(header: true, sep: '\t', strip: true)
-        .map { row -> row + [new_name: row.sample_description.replace(' ', '_')] }
+        .map { row ->
+            row + [new_name: row.sample_description.replace(' ', '_')]
+        }
 
     FASTQ(metadata)
     FASTQC(FASTQ.out.fastq)
     CUTADAPT(FASTQ.out.fastq)
-    BOWTIE_ALIGN(BOWTIE_INDEX.out.index_dir, CUTADAPT.out.trimmed_reads)
-    SAM_TO_BAM(BOWTIE_ALIGN.out.sam)
-    FEATURECOUNT(DOWNLOAD_GENOME_ANN.out.annotation, SAM_TO_BAM.out.bam)
 
+    // One reference index for all samples
+    BOWTIE_ALIGN_BAM(
+        BOWTIE_INDEX.out.index_dir.first(),
+        CUTADAPT.out.trimmed_reads
+    )
+
+    FEATURECOUNT(
+        DOWNLOAD_GENOME_ANN.out.annotation.first(),
+        BOWTIE_ALIGN_BAM.out.bam
+    )
 }
