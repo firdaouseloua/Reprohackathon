@@ -16,7 +16,7 @@ workflow {
 
     metadata = METADATA.out.metadata
         .splitCsv(header: true, sep: '\t', strip: true)
-        .map { row -> row + [new_name: row.sample_description.replace(' ', '_')] }
+        .map { row -> row + [new_name: row.${params.meta_column}.replace(' ', '_')] }
 
     FASTQ(metadata)
     FASTQC(FASTQ.out.fastq)
