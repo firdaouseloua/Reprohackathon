@@ -15,9 +15,14 @@ workflow {
 
     metadata = METADATA.out.metadata
         .splitCsv(header: true, sep: '\t', strip: true)
-        .map { row ->
-            row + [new_name: row.sample_description.replace(' ', '_')]
+	.map { row ->
+            row + [new_name: row[params.meta_column].replace(' ', '_')]
         }
+
+    // Small test runs before downloading the whole study
+    if (params.max_samples > 0) {
+        metadata = metadata.take(params.max_samples as int)
+    }
 
     FASTQ(metadata)
     FASTQC(FASTQ.out.fastq)
