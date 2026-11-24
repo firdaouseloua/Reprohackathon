@@ -1,6 +1,5 @@
 process SALMON_INDEX {
 
-    set -euo pipefail
 
     tag "Mouse transcriptome - Salmon 1.2.0"
 
@@ -19,6 +18,7 @@ process SALMON_INDEX {
 
     script:
     """
+    set -euo pipefail
     # Keeping the paper's Salmon version
     salmon --version
 

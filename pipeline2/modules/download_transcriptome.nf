@@ -1,5 +1,4 @@
 process DOWNLOAD_TRANSCRIPTOME {
-    set -euo pipefail
 
     tag "Mus musculus - Ensembl Release 100"
 
@@ -19,6 +18,7 @@ process DOWNLOAD_TRANSCRIPTOME {
 
     script:
     """
+    set -euo pipefail
     # Download the mouse transcriptome, not the parasite!
     curl -fL --retry 3 \
         "${transcriptome_url}" \
