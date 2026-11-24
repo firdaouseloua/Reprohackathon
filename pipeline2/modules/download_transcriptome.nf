@@ -1,6 +1,6 @@
 process DOWNLOAD_TRANSCRIPTOME {
 
-    tag "Toxoplasma reference transcriptome"
+    tag "Mouse reference transcriptome"
 
     publishDir "${params.outdir}/reference", mode: 'copy'
 
