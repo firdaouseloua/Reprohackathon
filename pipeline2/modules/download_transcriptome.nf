@@ -3,7 +3,7 @@ process DOWNLOAD_TRANSCRIPTOME {
 
     tag "Mus musculus - Ensembl Release 100"
 
-    container 'curlimages/curl:8.10.1'
+    container 'reprohack-reference:1.0'
 
     cpus 1
 
