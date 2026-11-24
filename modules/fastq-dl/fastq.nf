@@ -17,7 +17,7 @@ process FASTQ {
     def is_paired = metadata.library_layout == "PAIRED" ? true : false
     
     """
-    fastq-dl --accession ${accession}
+    fastq-dl --accession ${accession} --protocol HTTPS
 
     if [ "${is_paired}" == "false" ]; then
         mv *.fastq.gz ${name}.fastq.gz
