@@ -5,7 +5,7 @@ process SALMON_INDEX {
 
     container 'quay.io/biocontainers/salmon:1.2.0--hf69c8f4_0'
 
-    cpus { Math.min(4, params.cpu as int) }
+    cpus { Math.min(4, params.cpus as int) }
     memory '8 GB'
 
     publishDir "${params.outdir}/index", mode: 'copy'

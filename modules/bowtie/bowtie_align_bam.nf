@@ -2,7 +2,7 @@ process BOWTIE_ALIGN_BAM {
 
     tag "${metadata.new_name}"
 
-    cpus { Math.min(8, params.cpu as int) }
+    cpus { Math.min(8, params.cpus as int) }
 
     container 'reprohack-bowtie-samtools:1.0'
 

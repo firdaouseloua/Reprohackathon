@@ -1,13 +1,13 @@
 process quantification {
 
     container 'quay.io/biocontainers/salmon:1.2.0--hf69c8f4_0'
-    cpus { Math.min(8, params.cpu as int) }
+    cpus { Math.min(8, params.cpus as int) }
     publishDir "${params.outdir}/quantification", mode: 'copy'
 
     input:
     tuple val(sample), path(reads)
     path salmon_index
-    
+
     output:
     tuple val(sample), path("${sample}_quant"), emit: quant_file
 

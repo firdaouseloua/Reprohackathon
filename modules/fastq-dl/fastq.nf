@@ -1,7 +1,11 @@
 process FASTQ {
 
     container 'ottarein/fastq-dl'
+    cpus 1
     maxForks 3
+    time '15m'
+    errorStrategy 'retry'
+    maxRetries 3
 
     publishDir "${params.outdir}/fastqdl", mode: 'copy'
 
@@ -9,21 +13,26 @@ process FASTQ {
     val metadata
 
     output:
-    tuple val(metadata), path("*.{fq,fastq}{,.gz}"), emit : fastq
+    tuple val(metadata), path("${metadata.new_name}*.{fq,fastq}{,.gz}"), emit: fastq
 
     script:
     def accession = metadata.run_accession
     def name = metadata.new_name
-    def is_paired = metadata.library_layout == "PAIRED" ? true : false
-    
+    def is_paired = metadata.library_layout == "PAIRED"
+
     """
     fastq-dl --accession ${accession} --protocol HTTPS
 
     if [ "${is_paired}" == "false" ]; then
-        mv *.fastq.gz ${name}.fastq.gz
+        [ -f "${accession}.fastq.gz" ] && [ "${accession}" != "${name}" ] && mv "${accession}.fastq.gz" "${name}.fastq.gz"
     else
-        mv *_1*.fastq.gz ${name}_1.fastq.gz 2>/dev/null || mv *_R1*.fastq.gz ${name}_1.fastq.gz
-        mv *_2*.fastq.gz ${name}_2.fastq.gz 2>/dev/null || mv *_R2*.fastq.gz ${name}_2.fastq.gz
+        if [ -f "${accession}_1.fastq.gz" ] && [ "${accession}" != "${name}" ]; then
+            mv "${accession}_1.fastq.gz" "${name}_1.fastq.gz"
+            mv "${accession}_2.fastq.gz" "${name}_2.fastq.gz"
+        elif [ -f "${accession}_R1.fastq.gz" ]; then
+            mv "${accession}_R1.fastq.gz" "${name}_1.fastq.gz"
+            mv "${accession}_R2.fastq.gz" "${name}_2.fastq.gz"
+        fi
     fi
     """
 }
