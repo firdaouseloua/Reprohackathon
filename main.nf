@@ -1,3 +1,4 @@
+include { BUILD_TX2GENE } from './modules/build_tx2gene'
 include { DOWNLOAD_TRANSCRIPTOME } from './modules/download_transcriptome'
 include { DOWNLOAD_MOUSE_ANNOTATION } from './modules/download_mouse_annotation'
 include { SALMON_INDEX } from './modules/salmon/salmon_index'
@@ -73,6 +74,13 @@ workflow {
         // Build the index once for all samples
         SALMON_INDEX(
             DOWNLOAD_TRANSCRIPTOME.out.transcriptome
+        )
+
+         // Validate the reference and prepare the gene mapping
+        BUILD_TX2GENE(
+            DOWNLOAD_MOUSE_ANNOTATION.out.annotation,
+            DOWNLOAD_TRANSCRIPTOME.out.transcriptome,
+            file("${projectDir}/scripts/build_tx2gene.py")
         )
 
     } else {
