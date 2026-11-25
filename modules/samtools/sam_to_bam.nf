@@ -1,5 +1,5 @@
 process SAM_TO_BAM {
-    cpus 4
+    cpus Math.min(4, params.cpus)
     container 'ottarein/samtools:1.21'
     publishDir "${params.outdir}/bam", mode: 'copy'
 

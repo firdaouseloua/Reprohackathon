@@ -2,6 +2,7 @@
 
 !.gitignore
 
+rstudio
 env/
 work/
 results/

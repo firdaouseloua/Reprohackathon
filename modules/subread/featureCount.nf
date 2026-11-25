@@ -1,6 +1,6 @@
 process FEATURECOUNT {
 
-    cpus 8
+    cpus Math.min(8, params.cpus)
     container 'ottarein/featurecounts:1.4.6-p3'
     publishDir "${params.outdir}/featurecount", mode: 'copy'
 
@@ -15,6 +15,6 @@ process FEATURECOUNT {
     def name = metadata.new_name
 
     """
-    featureCounts -t exon -g ID -s 1 -F GTF -T ${task.cpus} -a ${gff} -o ${name}_count.txt $bam
+    featureCounts -t gene -g ID -s 1 -F GTF -T ${task.cpus} -a ${gff} -o ${name}_count.txt $bam
     """
 }
