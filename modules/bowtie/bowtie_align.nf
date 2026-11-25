@@ -1,6 +1,6 @@
 process BOWTIE_ALIGN {
 
-    cpus Math.min(8, params.cpus)
+    cpus Math.min(8, params.cpus as int)
     container 'ottarein/bowtie:0.12.7'
     publishDir "${params.outdir}/bw_mapping", mode: 'copy'
 
