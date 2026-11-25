@@ -1,0 +1,22 @@
+FROM mambaorg/micromamba:1.5.8
+
+RUN micromamba install -y -n base \
+    -c conda-forge -c bioconda \
+    samtools=1.21 \
+    && micromamba clean --all --yes
+
+USER root
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    wget unzip ca-certificates perl procps gzip \
+    && rm -rf /var/lib/apt/lists/*
+
+# Keeping the exact Bowtie version from the paper
+RUN wget -q -O /tmp/bowtie.zip \
+    "https://sourceforge.net/projects/bowtie-bio/files/bowtie/0.12.7/bowtie-0.12.7-linux-x86_64.zip/download" \
+    && unzip -q /tmp/bowtie.zip -d /opt \
+    && rm /tmp/bowtie.zip
+
+ENV PATH="/opt/bowtie-0.12.7:/opt/conda/bin:${PATH}"
+
+USER $MAMBA_USER
