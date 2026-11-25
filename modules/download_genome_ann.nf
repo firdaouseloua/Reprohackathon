@@ -1,4 +1,4 @@
-process DOWNLOAD_GENOME_ANN {
+process REF_GENOME_AUREUS {
 
     tag "CP000253.1"
 

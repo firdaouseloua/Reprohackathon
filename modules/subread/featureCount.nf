@@ -15,6 +15,6 @@ process FEATURECOUNT {
     def name = metadata.new_name
 
     """
-    featureCounts -t gene -g ID -s 1 -F GTF -T ${task.cpus} -a ${gff} -o ${name}_count.txt $bam
+    featureCounts -t gene -g ID -s 2 -F GTF -T ${task.cpus} -a ${gff} -o ${name}_count.txt $bam
     """
 }
