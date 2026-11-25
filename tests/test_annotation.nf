@@ -1,4 +1,4 @@
-include { DOWNLOAD_MOUSE_ANNOTATION } from './modules/download_mouse_annotation'
+include { DOWNLOAD_MOUSE_ANNOTATION } from '../modules/download_mouse_annotation'
 
 workflow {
 
