@@ -4,7 +4,6 @@ include { FASTQC as FASTQC_TRIMMED} from './modules/fastqc/fastqc'
 include { METADATA } from './modules/fastq-dl/metadata'
 include { CUTADAPT } from './modules/cutadapt/cutadapt'
 include { TRIMMOMATIC } from './modules/trimmomatic/trimmomatic'
-include { REF_GENOME_MOUSE } from './modules/download_genome_ann'
 include { REF_GENOME_AUREUS } from './modules/download_genome_ann'
 include { BOWTIE_INDEX } from './modules/bowtie/bowtie_index'
 include { BOWTIE_ALIGN } from './modules/bowtie/bowtie_align'
@@ -30,7 +29,6 @@ workflow {
         FEATURECOUNT(REF_GENOME_AUREUS.out.annotation, SAM_TO_BAM.out.bam)
     }
     else if(params.study_accession=="PRJNA483261"){
-        REF_GENOME_MOUSE()
         FASTQ(metadata)
         FASTQC(FASTQ.out.fastq)
         TRIMMOMATIC(FASTQ.out.fastq)
