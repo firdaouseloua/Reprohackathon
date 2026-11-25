@@ -1,7 +1,10 @@
 process FASTQ {
 
     container 'ottarein/fastq-dl'
-    maxForks 3
+    cpus 1
+    maxForks 3                
+    errorStrategy 'retry'
+    maxRetries 3
 
     publishDir "${params.outdir}/fastqdl", mode: 'copy'
 
