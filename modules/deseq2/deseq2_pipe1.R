@@ -65,11 +65,32 @@ rownames(res) <- sub("^gene-", "", rownames(res))
 translation_genes <- res[genes_translation_leaves,]
 translation_genes <- translation_genes[!is.na(translation_genes$log2FoldChange), ]
 
+plot1 <- translation_genes[,c("baseMean","log2FoldChange","significant")]
+df <- as.data.frame(plot1)
 
-#ylim = c(-6, 5), xlim = c(0, 20)
+p <- ggplot(df, aes(x = log2(baseMean + 1), y = log2FoldChange, color = significant)) +
+  geom_point(alpha = 0.75, size = 1.8) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "black", size = 1) +
+  coord_cartesian(xlim = c(0, 20), ylim = c(-6, 5)) +
+  scale_color_manual(
+    values = c("FALSE" = "black", "TRUE" = "red"),
+    name = "padj < 0.05") +
+  labs(
+    title = "Translation-related genes",
+    x = expression(log[2](baseMean)),
+    y = expression(log[2]~fold~change)) +
+  theme_classic(base_size = 14)
+
+ggsave(
+  filename = "MAplot_translation.png",
+  plot = p,
+  width = 8,
+  height = 4,
+  dpi = 300
+)
 # Fig. 3c : gènes de traduction
-png(file.path("MAplot_translation.png"), width = 1800, height = 1400, res = 250)
-plotMA(translation_genes[,c("baseMean","log2FoldChange","significant")], main = "Translation-related genes" )
+png(file.path("MAplot_translation.png"), width = 1800, height = 1200, res = 300)
+plotMA(plot1, main = "Translation-related genes", ylim = c(-6, 5), xlim = c(0.1, 20))
 dev.off()
 
 # Supp. Fig. 3 : tous les gènes
