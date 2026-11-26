@@ -1,15 +1,9 @@
 process DOWNLOAD_MOUSE_ANNOTATION {
 
     tag "Mouse annotation - Ensembl Release 100"
-
-    container 'reprohack-reference:1.0'
-
+    container 'ottarein/general:0.1'
     cpus 1
-
-    publishDir "${params.outdir}/reference", mode: 'copy'
-
-    input:
-    val annotation_url
+    publishDir "${params.outdir}/reference_files", mode: 'copy'
 
     output:
     path "mouse_annotation.gtf", emit: annotation
@@ -20,8 +14,8 @@ process DOWNLOAD_MOUSE_ANNOTATION {
     set -euo pipefail
 
     # Same release as the transcriptome, no mixing references today
-    curl -fL --retry 3 \
-        "${annotation_url}" \
+    curl -fL --retry 3 \\
+        "https://ftp.ensembl.org/pub/release-100/gtf/mus_musculus/Mus_musculus.GRCm38.100.chr_patch_hapl_scaff.gtf.gz" \\
         -o mouse_annotation.gtf.gz
 
     gzip -t mouse_annotation.gtf.gz

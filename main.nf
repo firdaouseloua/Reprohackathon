@@ -1,24 +1,22 @@
-include { BUILD_TX2GENE } from './modules/build_tx2gene'
+include { BUILD_TX2GENE } from './modules/tx2gene/build_tx2gene'
 include { DOWNLOAD_TRANSCRIPTOME } from './modules/download_transcriptome'
 include { DOWNLOAD_MOUSE_ANNOTATION } from './modules/download_mouse_annotation'
 include { SALMON_INDEX } from './modules/salmon/salmon_index'
-include { quantification } from './modules/salmon/quantification'
+include { QUANTIFICATION } from './modules/salmon/quantification'
 include { FASTQ } from './modules/fastq-dl/fastq'
 include { FASTQC } from './modules/fastqc/fastqc'
+include { FASTQC as FASTQC_TRIMMED} from './modules/fastqc/fastqc'
 include { METADATA } from './modules/fastq-dl/metadata'
 include { CUTADAPT } from './modules/cutadapt/cutadapt'
-include { DOWNLOAD_GENOME_ANN } from './modules/download_genome_ann'
+include { TRIMMOMATIC } from './modules/trimmomatic/trimmomatic'
+include { REF_GENOME_AUREUS } from './modules/ref_genome_aureus'
 include { BOWTIE_INDEX } from './modules/bowtie/bowtie_index'
-include { BOWTIE_ALIGN_BAM } from './modules/bowtie/bowtie_align_bam'
+include { BOWTIE_ALIGN } from './modules/bowtie/bowtie_align'
 include { FEATURECOUNT } from './modules/subread/featureCount'
 
 workflow {
 
-    def meta_column = params.meta_column ?: (
-        params.study_accession == 'PRJNA483261'
-            ? 'library_name'
-            : 'sample_description'
-    )
+    def meta_column = params.study_accession == 'PRJNA483261'? 'library_name': 'sample_description'
 
     METADATA()
 
@@ -28,60 +26,42 @@ workflow {
             row + [new_name: row[meta_column].replace(' ', '_')]
         }
 
-    // Small test runs before downloading the whole study
-    def sample_limit = params.max_samples.toString().toInteger()
-
-    if (sample_limit > 0) {
-        metadata = metadata.take(sample_limit)
-    }
-
     if (params.study_accession == 'PRJNA586837') {
 
-        DOWNLOAD_GENOME_ANN()
+        REF_GENOME_AUREUS()
 
         // One reference index for all samples
-        BOWTIE_INDEX(DOWNLOAD_GENOME_ANN.out.genome)
+        BOWTIE_INDEX(REF_GENOME_AUREUS.out.genome)
 
         FASTQ(metadata)
         FASTQC(FASTQ.out.fastq)
         CUTADAPT(FASTQ.out.fastq)
 
         // Avoid huge intermediate SAM files
-        BOWTIE_ALIGN_BAM(
-            BOWTIE_INDEX.out.index_dir.first(),
-            CUTADAPT.out.trimmed_reads
-        )
+        BOWTIE_ALIGN(BOWTIE_INDEX.out.index_dir, 
+                     CUTADAPT.out.trimmed_reads)
 
-        FEATURECOUNT(
-            DOWNLOAD_GENOME_ANN.out.annotation.first(),
-            BOWTIE_ALIGN_BAM.out.bam
-        )
+        FEATURECOUNT(REF_GENOME_AUREUS.out.annotation,
+                     BOWTIE_ALIGN.out.bam)
 
     } else if (params.study_accession == 'PRJNA483261') {
 
         FASTQ(metadata)
         FASTQC(FASTQ.out.fastq)
 
+        TRIMMOMATIC(FASTQ.out.fastq)
         // Same Ensembl release for both reference files
-        DOWNLOAD_TRANSCRIPTOME(
-            Channel.value(params.transcriptome_url)
-        )
-
-        DOWNLOAD_MOUSE_ANNOTATION(
-            Channel.value(params.annotation_url)
-        )
+        DOWNLOAD_TRANSCRIPTOME()
+        DOWNLOAD_MOUSE_ANNOTATION()
 
         // Build the index once for all samples
-        SALMON_INDEX(
-            DOWNLOAD_TRANSCRIPTOME.out.transcriptome
-        )
+        SALMON_INDEX(DOWNLOAD_TRANSCRIPTOME.out.transcriptome)
 
          // Validate the reference and prepare the gene mapping
-        BUILD_TX2GENE(
-            DOWNLOAD_MOUSE_ANNOTATION.out.annotation,
-            DOWNLOAD_TRANSCRIPTOME.out.transcriptome,
-            file("${projectDir}/scripts/build_tx2gene.py")
-        )
+        BUILD_TX2GENE(DOWNLOAD_MOUSE_ANNOTATION.out.annotation,
+                      DOWNLOAD_TRANSCRIPTOME.out.transcriptome)
+
+        QUANTIFICATION(TRIMMOMATIC.out.trimmed_reads, SALMON_INDEX.index)
 
     } else {
         error "Unknown study accession: ${params.study_accession}"

@@ -2,8 +2,8 @@ process FASTQ {
 
     container 'ottarein/fastq-dl'
     cpus 1
-    maxForks 3
-    time '15m'
+    maxForks 3      
+    time '35m'          
     errorStrategy 'retry'
     maxRetries 3
 
