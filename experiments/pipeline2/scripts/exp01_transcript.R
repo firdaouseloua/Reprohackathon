@@ -1,9 +1,8 @@
 library(DESeq2) ###### Ajouter la version 1.16
 library(tximport)
 library(VennDiagram)
-library(readr)
 
-files <- list.files("quantification", pattern = "_quant\\.sf$", full.names = TRUE)
+files <- list.files("../../quantification", pattern = "_quant\\.sf$", full.names = TRUE)
 names(files) <- substr(basename(files), 1, regexpr("_post", basename(files)) - 1)
 
 txi <- tximport(files, type = "salmon", txOut = TRUE)
