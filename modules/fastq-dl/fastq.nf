@@ -7,8 +7,6 @@ process FASTQ {
     errorStrategy 'retry'
     maxRetries 3
 
-    publishDir "${params.outdir}/fastqdl", mode: 'copy'
-
     input:
     val metadata
 
