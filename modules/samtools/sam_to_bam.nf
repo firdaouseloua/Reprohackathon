@@ -1,0 +1,21 @@
+process SAM_TO_BAM {
+
+    cpus { Math.min(4, (params.cpus ?: 1) as int) }
+    container 'ottarein/samtools:1.21'
+    publishDir "${params.outdir}/bam", mode: 'copy'
+
+    input:
+    tuple val(metadata), path(sam)
+
+    output:
+    tuple val(metadata), path("*.bam"), emit: bam
+    tuple val(metadata), path("*.bai"), emit: bam_index
+
+    script:
+    def name = metadata.new_name
+
+    """
+    samtools sort -@ ${task.cpus} -o ${name}.bam ${sam}
+    samtools index ${name}.bam
+    """
+}
