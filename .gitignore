@@ -2,6 +2,8 @@
 
 !.gitignore
 
+pip1/
+pip2/
 rstudio
 env/
 work/
