@@ -35,7 +35,7 @@ workflow {
         FASTQ(metadata)
         FASTQC(FASTQ.out.fastq)
         CUTADAPT(FASTQ.out.fastq)
-
+        FASTQC_TRIMMED(CUTADAPT.out.trimmed_reads)
         // Avoid huge intermediate SAM files
         BOWTIE_ALIGN(BOWTIE_INDEX.out.index_dir, 
                      CUTADAPT.out.trimmed_reads)

@@ -65,19 +65,17 @@ rownames(res) <- sub("^gene-", "", rownames(res))
 translation_genes <- res[genes_translation_leaves,]
 translation_genes <- translation_genes[!is.na(translation_genes$log2FoldChange), ]
 
-plot1 <- translation_genes[,c("baseMean","log2FoldChange","significant")]
-df <- as.data.frame(plot1)
-
-p <- ggplot(df, aes(x = log2(baseMean + 1), y = log2FoldChange, color = significant)) +
-  geom_point(alpha = 0.75, size = 1.8) +
+plot1 <- as.data.frame(translation_genes[,c("baseMean","log2FoldChange","significant")])
+plot1
+p <- ggplot(plot1, aes(x = log2(baseMean), y = log2FoldChange, color = significant)) +
+  geom_point(alpha = 1, size = 1) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "black", size = 1) +
   coord_cartesian(xlim = c(0, 20), ylim = c(-6, 5)) +
   scale_color_manual(
-    values = c("FALSE" = "black", "TRUE" = "red"),
-    name = "padj < 0.05") +
+    values = c("FALSE" = "black", "TRUE" = "red")) +
   labs(
     title = "Translation-related genes",
-    x = expression(log[2](baseMean)),
+    x = expression(baseMean),
     y = expression(log[2]~fold~change)) +
   theme_classic(base_size = 14)
 
@@ -93,6 +91,24 @@ png(file.path("MAplot_translation.png"), width = 1800, height = 1200, res = 300)
 plotMA(plot1, main = "Translation-related genes", ylim = c(-6, 5), xlim = c(0.1, 20))
 dev.off()
 
+plot2 <- res[,c("baseMean","log2FoldChange","significant")]
+plot2
+p2 <- ggplot(plot2, aes(x = log10(baseMean), y = log2FoldChange, color = significant)) +
+  geom_point(alpha = 0.5, size = 1) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "black", size = 1) +
+  scale_color_manual(
+    values = c("FALSE" = "black", "TRUE" = "red")) +
+  labs(
+    title = "All genes",
+    x = expression(baseMean),
+    y = expression(log[2]~fold~change)) 
+ggsave(
+  filename = "MAplot_all.png",
+  plot = p2,
+  width = 8,
+  height = 4,
+  dpi = 300
+)
 # Supp. Fig. 3 : tous les gènes
 png(file.path("MAplot_all.png"), width = 1800, height = 1400, res = 250)
 plotMA(res, main = "All genes", ylim = c(-4, 4))
