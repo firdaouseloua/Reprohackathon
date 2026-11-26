@@ -87,9 +87,9 @@ ggsave(
   dpi = 300
 )
 # Fig. 3c : gènes de traduction
-png(file.path("MAplot_translation.png"), width = 1800, height = 1200, res = 300)
-plotMA(plot1, main = "Translation-related genes", ylim = c(-6, 5), xlim = c(0.1, 20))
-dev.off()
+#png(file.path("MAplot_translation.png"), width = 1800, height = 1200, res = 300)
+#plotMA(plot1, main = "Translation-related genes", ylim = c(-6, 5), xlim = c(0.1, 20))
+#dev.off()
 
 plot2 <- res[,c("baseMean","log2FoldChange","significant")]
 plot2
@@ -110,6 +110,6 @@ ggsave(
   dpi = 300
 )
 # Supp. Fig. 3 : tous les gènes
-png(file.path("MAplot_all.png"), width = 1800, height = 1400, res = 250)
-plotMA(res, main = "All genes", ylim = c(-4, 4))
-dev.off()
+#png(file.path("MAplot_all.png"), width = 1800, height = 1400, res = 250)
+#plotMA(res, main = "All genes", ylim = c(-4, 4))
+#dev.off()
