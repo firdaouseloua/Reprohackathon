@@ -8,6 +8,7 @@ process BUILD_TX2GENE {
     input:
     path annotation
     path transcriptome
+    path tx2gene_script
 
     output:
     path "tx2gene.tsv", emit: mapping
@@ -16,7 +17,7 @@ process BUILD_TX2GENE {
     script:
     """
     # No missing transcripts allowed this time
-    python3 build_tx2gene.py \\
+    python3 ${tx2gene_script} \\
         ${annotation} \\
         ${transcriptome} \\
         tx2gene.tsv > reference_validation.txt
