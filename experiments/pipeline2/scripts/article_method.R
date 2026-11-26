@@ -5,7 +5,7 @@ library(VennDiagram)
 files <- list.files("../../quantification", pattern = "_quant\\.sf$", full.names = TRUE)
 names(files) <- substr(basename(files), 1, regexpr("_post", basename(files)) - 1)
 
-txi <- tximport(files, type = "salmon", txOut = TRUE)
+txi <- tximport(files, type = "salmon", txOut = TRUE, importer = read.delim)
 
 samples <- data.frame(
   sample    = names(files),

@@ -6,7 +6,7 @@ files <- list.files("../../quantification", pattern = "_quant\\.sf$", full.names
 names(files) <- substr(basename(files), 1, regexpr("_post", basename(files)) - 1)
 
 tx2gene <- read.delim("../../reference/tx2gene.tsv", header = TRUE, stringsAsFactors = FALSE)
-txi <- tximport(files, type = "salmon", tx2gene = tx2gene)
+txi <- tximport(files, type = "salmon", tx2gene = tx2gene, importer = read.delim)
 
 samples <- data.frame(
   sample    = names(files),
