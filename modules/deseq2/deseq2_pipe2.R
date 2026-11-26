@@ -1,13 +1,12 @@
 library(DESeq2) ###### Ajouter la version 1.16
 library(tximport)
 library(VennDiagram)
-library(readr)
 
 files <- list.files("quantification", pattern = "_quant\\.sf$", full.names = TRUE)
 names(files) <- substr(basename(files), 1, regexpr("_post", basename(files)) - 1)
 
-tx2gene <- read.delim("reference_files/tx2gene.tsv", header = TRUE, stringsAsFactors = FALSE)
-txi <- tximport(files, type = "salmon", tx2gene = tx2gene)
+#tx2gene <- read.delim("reference_files/tx2gene.tsv", header = TRUE, stringsAsFactors = FALSE)
+txi <- tximport(files, type = "salmon", txOut = TRUE)
 
 samples <- data.frame(
   sample    = names(files),
@@ -32,7 +31,7 @@ res_d33 <- results(dds, contrast = c("group", "In_d33", "WT_d33"))
 deg <- function(infected, control) {
   r <- as.data.frame(results(dds, contrast = c("group", infected, control)))
   r$transcript <- rownames(r)
-  r[!is.na(r$pvalue) & r$pvalue < 0.05 & abs(r$log2FoldChange) >= 1.5, ]
+  r[!is.na(r$padj) & r$padj < 0.05 & abs(r$log2FoldChange) > 1.5, ]
 }
 
 ## article : pval < 0.05 et |log2FC| >= 1.5
@@ -63,9 +62,9 @@ venn.diagram(
   imagetype = "png",
   col = rep("#000000", 4),
   fill = c("#b3e2ff", "#b1ffc5", "#f4ffb1", "#ffb2b2"),
-  alpha = 0.5,
-  height = 2000,
-  width = 2400,
+  alpha = 0.7,
+  height = 2500,
+  width = 3500,
   resolution = 300
 )
 
