@@ -21,7 +21,13 @@ process REF_GENOME_AUREUS {
     curl -fL --retry 3 \\
       "https://www.ncbi.nlm.nih.gov/sviewer/viewer.cgi?db=nuccore&report=gff3&id=CP000253.1" \\
       -o aureus.gff
+    
+    test  -s aureus.gff
+    
+    curl -fL --retry 3 \\
+      "https://www.kegg.jp/kegg-bin/download_htext?htext=sao00001&format=json&filedir="
+      -o kegg_orthology.json
 
-    test -s aureus.gff
+    test -s kegg_orthology.json
     """
 }
