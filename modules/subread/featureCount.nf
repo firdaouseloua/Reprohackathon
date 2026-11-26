@@ -1,6 +1,6 @@
 process FEATURECOUNT {
 
-    cpus { Math.min(8, params.cpu as int) }
+    cpus { Math.min(8, params.cpus as int) }
     container 'ottarein/featurecounts:1.4.6-p3'
     publishDir "${params.outdir}/featurecount", mode: 'copy'
 
