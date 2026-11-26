@@ -6,22 +6,22 @@ process SALMON_INDEX {
     publishDir "${params.outdir}/index", mode: 'copy'
 
     input:
-    path transcriptome
+    path gentrome
+    path decoy
 
     output:
     path "salmon_index", emit: index
 
     script:
     """
-    set -euo pipefail
-    # Keeping the paper's Salmon version
-    salmon --version
-
+    
     # Explicit k-mer size for reproducibility
-    salmon index \
-        -t ${transcriptome} \
-        -i salmon_index \
-        -k 31 \
+    salmon index \\
+        -t ${gentrome} \\
+        -i salmon_index \\
+        -d decoy.txt \\
+        --gencode \\
+        -k 31 \\
         -p ${task.cpus}
 
     # At least make sure we actually built an index
