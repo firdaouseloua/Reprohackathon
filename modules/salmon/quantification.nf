@@ -24,6 +24,7 @@ process QUANTIFICATION {
         --gcBias \\
         --seqBias \\
         --numBootstraps 30 \\
+        --validateMappings \\
         -o ${new_name}_quant
 
     test -s ${new_name}_quant/quant.sf
