@@ -47,5 +47,6 @@ print(sapply(sets, length))
 
 futile.logger::flog.threshold(futile.logger::ERROR, name = "VennDiagramLogger")
 venn.diagram(sets, filename = file.path(outdir, "Venn_Fig2B.png"),
-             fill = c("steelblue1", "khaki1", "lightcoral", "palegreen"),
+             col = c("000000", "000000", "000000", "000000"),
+             fill = c("b3e2ff", "f4ffb1", "ffb2b2", "b1ffc5"),
              alpha = 0.5, height = 2000, width = 2400, resolution = 300)
