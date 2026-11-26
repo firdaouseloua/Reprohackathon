@@ -26,7 +26,7 @@ process REF_GENOME_MOUSE {
 
     cat mouse_transcript.fa.gz mouse_genome.fa.gz > gentrome.fa.gz
 
-    test -s mouse_transcripts.fa
+    test -s mouse_transcripts.fa.gz
     test -s mouse_genome.fa.gz
     test -s decoys.txt
     test -s gentrome.fa.gz
