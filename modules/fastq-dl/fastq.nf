@@ -19,7 +19,7 @@ process FASTQ {
     def accession = metadata.run_accession
     def name = metadata.new_name
     def is_paired = metadata.library_layout == "PAIRED"
-    
+
     """
     fastq-dl --accession ${accession} --protocol HTTPS
 

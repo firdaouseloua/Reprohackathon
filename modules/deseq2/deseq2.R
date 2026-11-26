@@ -1,7 +1,7 @@
 library(DESeq2) ###### Ajouter la version 1.16
 library(rtracklayer)
 
-genome_annot <- import("results/ref_genome/genome.gff") 
+genome_annot <- import("results/ref_genome/genome.gff")
 genes <- genome_annot[genome_annot$type=="gene"]
 
 count_files <- list.files("results/featurecount/", full.names = T)

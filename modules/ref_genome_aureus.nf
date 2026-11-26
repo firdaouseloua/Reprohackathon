@@ -2,11 +2,11 @@ process REF_GENOME_AUREUS {
 
     tag "CP000253.1"
 
-    publishDir "${params.outdir}/ref_genome", mode: 'copy'
+    publishDir "${params.outdir}/reference_files", mode: 'copy'
 
     output:
-    path "genome.fasta", emit: genome
-    path "genome.gff", emit: annotation
+    path "aureus.fasta", emit: genome
+    path "aureus.gff", emit: annotation
 
     script:
     """
