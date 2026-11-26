@@ -59,13 +59,17 @@ collect_leaves <- function(node) {
 
 genes_translation <- find_node(kegg_orthology, "09122")
 genes_translation_leaves <- collect_leaves(genes_translation)
-
+genes_translation_leaves <- sub(" .*", "", genes_translation_leaves)
+genes_translation_leaves[!grepl("^SAOUHSC_", genes_translation_leaves)] <- paste0("SAOUHSC_", genes_translation_leaves[!grepl("^SAOUHSC_", genes_translation_leaves)])
 rownames(res) <- sub("^gene-", "", rownames(res))
 translation_genes <- res[genes_translation_leaves,]
+translation_genes <- translation_genes[!is.na(translation_genes$log2FoldChange), ]
 
+
+#ylim = c(-6, 5), xlim = c(0, 20)
 # Fig. 3c : gènes de traduction
 png(file.path("MAplot_translation.png"), width = 1800, height = 1400, res = 250)
-plotMA(translation_genes, main = "Translation-related genes", ylim = c(-6, 5), xlim = c(0, 20))
+plotMA(translation_genes[,c("baseMean","log2FoldChange","significant")], main = "Translation-related genes" )
 dev.off()
 
 # Supp. Fig. 3 : tous les gènes
