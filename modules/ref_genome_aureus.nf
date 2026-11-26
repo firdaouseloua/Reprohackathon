@@ -12,14 +12,14 @@ process REF_GENOME_AUREUS {
     """
     curl -fL --retry 3 \\
       "https://www.ebi.ac.uk/ena/browser/api/fasta/CP000253.1" \\
-      -o genome.fasta
+      -o aureus.fasta
 
-    test -s genome.fasta
+    test -s aureus.fasta
 
     curl -fL --retry 3 \\
       "https://www.ncbi.nlm.nih.gov/sviewer/viewer.cgi?db=nuccore&report=gff3&id=CP000253.1" \\
-      -o genome.gff
+      -o aureus.gff
 
-    test -s genome.gff
+    test -s aureus.gff
     """
 }

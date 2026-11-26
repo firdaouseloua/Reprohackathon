@@ -1,7 +1,7 @@
 process BUILD_TX2GENE {
 
     tag "Validate mouse reference annotations"
-    container 'python:3.12'
+    container 'quay.io/biocontainers/python:3.12.12'
     cpus 1
     publishDir "${params.outdir}/reference_files", mode: 'copy'
 
