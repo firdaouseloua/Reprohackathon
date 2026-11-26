@@ -1,6 +1,7 @@
 library(DESeq2) ###### Ajouter la version 1.16
 library(rtracklayer)
 library(rjson)
+library(ggplot2)
 
 genome_annot <- import("reference_files/aureus.gff")
 genes <- genome_annot[genome_annot$type=="gene"]
@@ -34,17 +35,6 @@ cat("DEG (padj < 0.05) :", sum(res$significant),
     "(up :", sum(res$significant & res$log2FoldChange > 0),
     ", down :", sum(res$significant & res$log2FoldChange < 0), ")\n")
 
-# 4. MA-plot
-ma_plot <- function(df, title) {
-  plot(log2(df$baseMean), df$log2FoldChange,
-       col = ifelse(df$significant, "red", "grey"), pch = 16,
-       xlab = "Log2 base mean", ylab = "Log2 Fold Change", main = title)
-  abline(h = 0, lty = 3)
-  legend("topright", c("Significant", "Non-significant"),
-         col = c("red", "grey"), pch = 16, bty = "n")
-}
-ma_plot(res, "MA-plot")
-
 # 5. Fonction pour trouver un noeud
 find_node <- function(node, prefix) {
   if (startsWith(node$name, prefix)) {
@@ -75,10 +65,10 @@ translation_genes <- res[genes_translation_leaves,]
 
 # Fig. 3c : gènes de traduction
 png(file.path("MAplot_translation.png"), width = 1800, height = 1400, res = 250)
-ma_plot(translation_genes, "Translation-related genes")
+plotMA(translation_genes, main = "Translation-related genes", ylim = c(-6, 5), xlim = c(0, 20))
 dev.off()
 
 # Supp. Fig. 3 : tous les gènes
 png(file.path("MAplot_all.png"), width = 1800, height = 1400, res = 250)
-ma_plot(res, "All genes")
+plotMA(res, main = "All genes", ylim = c(-4, 4))
 dev.off()
