@@ -19,7 +19,7 @@ process SALMON_INDEX {
     salmon index \\
         -t ${gentrome} \\
         -i salmon_index \\
-        -d decoy.txt \\
+        -d ${decoy} \\
         --gencode \\
         -k 31 \\
         -p ${task.cpus}
