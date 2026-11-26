@@ -21,9 +21,9 @@ process QUANTIFICATION {
         -1 ${reads[0]} \\
         -2 ${reads[1]} \\
         -p ${task.cpus} \\
-        --gcBias
-        --seqBias
-        --numBootstraps 30
+        --gcBias \\
+        --seqBias \\
+        --numBootstraps 30 \\
         -o ${new_name}_quant
 
     test -s ${new_name}_quant/quant.sf
