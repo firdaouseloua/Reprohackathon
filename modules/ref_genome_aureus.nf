@@ -14,6 +14,8 @@ process REF_GENOME_AUREUS {
       "https://www.ebi.ac.uk/ena/browser/api/fasta/CP000253.1" \\
       -o aureus.fasta
 
+    sed -i 's/^>.*/>CP000253.1/' aureus.fasta
+    grep -q '^>CP000253\\.1$' aureus.fasta
     test -s aureus.fasta
 
     curl -fL --retry 3 \\

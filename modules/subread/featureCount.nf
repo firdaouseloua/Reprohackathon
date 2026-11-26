@@ -10,6 +10,7 @@ process FEATURECOUNT {
 
     output:
     tuple val(metadata), path("*.txt"), emit: count_file
+    tuple val(metadata), path("*.txt.summary"), emit: summary_file
 
     script:
     def name = metadata.new_name
