@@ -18,7 +18,7 @@ process TRIMMOMATIC {
     ${fastq} \\
     ${name}_R1_paired.trimmed.fastq.gz ${name}_R1_trimmed.unpaired.fastq.gz \\
     ${name}_R2_paired.trimmed.fastq.gz ${name}_R2_trimmed.unpaired.fastq.gz \\
-    HEADCROP:9 \
+    HEADCROP:14 \
     AVGQUAL:30
     """
 }
