@@ -7,6 +7,7 @@ process REF_GENOME_AUREUS {
     output:
     path "aureus.fasta", emit: genome
     path "aureus.gff", emit: annotation
+    path "kegg_orthology.json", emit: kegg
 
     script:
     """
