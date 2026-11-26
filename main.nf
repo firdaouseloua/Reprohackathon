@@ -60,7 +60,8 @@ workflow {
 
          // Validate the reference and prepare the gene mapping
         BUILD_TX2GENE(DOWNLOAD_MOUSE_ANNOTATION.out.annotation,
-                      DOWNLOAD_TRANSCRIPTOME.out.transcriptome)
+                      DOWNLOAD_TRANSCRIPTOME.out.transcriptome,
+                      file("${moduleDir}/build_tx2gene.py"))
 
         QUANTIFICATION(TRIMMOMATIC.out.trimmed_reads, SALMON_INDEX.out.index)
 
