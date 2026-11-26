@@ -1,6 +1,5 @@
 include { BUILD_TX2GENE } from './modules/tx2gene/build_tx2gene'
-include { DOWNLOAD_TRANSCRIPTOME } from './modules/download_transcriptome'
-include { DOWNLOAD_MOUSE_ANNOTATION } from './modules/download_mouse_annotation'
+include { REF_GENOME_MOUSE } from './modules/ref_genome_mouse'
 include { SALMON_INDEX } from './modules/salmon/salmon_index'
 include { QUANTIFICATION } from './modules/salmon/quantification'
 include { FASTQ } from './modules/fastq-dl/fastq'
@@ -52,16 +51,9 @@ workflow {
         //TRIMMOMATIC(FASTQ.out.fastq)
         //FASTQC_TRIMMED(TRIMMOMATIC.out.trimmed_reads)
         // Same Ensembl release for both reference files
-        DOWNLOAD_TRANSCRIPTOME()
-        DOWNLOAD_MOUSE_ANNOTATION()
 
         // Build the index once for all samples
-        SALMON_INDEX(DOWNLOAD_TRANSCRIPTOME.out.transcriptome)
-
-         // Validate the reference and prepare the gene mapping
-        BUILD_TX2GENE(DOWNLOAD_MOUSE_ANNOTATION.out.annotation,
-                      DOWNLOAD_TRANSCRIPTOME.out.transcriptome,
-                      file("${projectDir}/modules/tx2gene/build_tx2gene.py"))
+        SALMON_INDEX(REF_GENOME_MOUSE.out.gentrome, REF_GENOME_MOUSE.out.decoy)
 
         QUANTIFICATION(FASTQ.out.fastq, SALMON_INDEX.out.index)
 
