@@ -25,7 +25,7 @@ process REF_GENOME_AUREUS {
     test  -s aureus.gff
     
     curl -fL --retry 3 \\
-      "https://www.kegg.jp/kegg-bin/download_htext?htext=sao00001&format=json&filedir="
+      "https://www.kegg.jp/kegg-bin/download_htext?htext=sao00001&format=json&filedir=" \\
       -o kegg_orthology.json
 
     test -s kegg_orthology.json
