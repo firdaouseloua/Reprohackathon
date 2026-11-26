@@ -49,8 +49,8 @@ workflow {
         FASTQ(metadata)
         FASTQC(FASTQ.out.fastq)
 
-        TRIMMOMATIC(FASTQ.out.fastq)
-        FASTQC_TRIMMED(TRIMMOMATIC.out.trimmed_reads)
+        //TRIMMOMATIC(FASTQ.out.fastq)
+        //FASTQC_TRIMMED(TRIMMOMATIC.out.trimmed_reads)
         // Same Ensembl release for both reference files
         DOWNLOAD_TRANSCRIPTOME()
         DOWNLOAD_MOUSE_ANNOTATION()
@@ -63,7 +63,7 @@ workflow {
                       DOWNLOAD_TRANSCRIPTOME.out.transcriptome,
                       file("${projectDir}/modules/tx2gene/build_tx2gene.py"))
 
-        QUANTIFICATION(TRIMMOMATIC.out.trimmed_reads, SALMON_INDEX.out.index)
+        QUANTIFICATION(FASTQ.out.fastq, SALMON_INDEX.out.index)
 
     } else {
         error "Unknown study accession: ${params.study_accession}"
