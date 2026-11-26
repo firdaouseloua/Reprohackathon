@@ -15,7 +15,7 @@ process REF_GENOME_AUREUS {
       -o aureus.fasta
 
     sed -i 's/^>.*/>CP000253.1/' aureus.fasta
-    grep -q '^>CP000253\\.1$' aureus.fasta
+    grep -q '^>CP000253\\.1\$' aureus.fasta
     test -s aureus.fasta
 
     curl -fL --retry 3 \\
