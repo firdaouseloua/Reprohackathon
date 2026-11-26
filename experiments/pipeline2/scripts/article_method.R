@@ -2,7 +2,7 @@ library(DESeq2) ###### Ajouter la version 1.16
 library(tximport)
 library(VennDiagram)
 
-files <- list.files("../../quantification", pattern = "_quant\\.sf$", full.names = TRUE)
+files <- list.files("quantification", pattern = "_quant\\.sf$", full.names = TRUE)
 names(files) <- substr(basename(files), 1, regexpr("_post", basename(files)) - 1)
 
 txi <- tximport(files, type = "salmon", txOut = TRUE, importer = read.delim)
@@ -30,7 +30,7 @@ res_d33 <- results(dds, contrast = c("group", "In_d33", "WT_d33"))
 deg <- function(infected, control) {
   r <- as.data.frame(results(dds, contrast = c("group", infected, control)))
   r$transcript <- rownames(r)
-  r[!is.na(r$padj) & r$padj < 0.05 & abs(r$log2FoldChange) > 1.5, ]
+  r[!is.na(r$pvalue) & r$pvalue < 0.05 & abs(r$log2FoldChange) >= 1.5, ]
 }
 
 # Supplementary Table 1: padj < 0.05 and |log2FC| > 1.5
