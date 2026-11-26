@@ -50,7 +50,7 @@ workflow {
         FASTQC(FASTQ.out.fastq)
 
         TRIMMOMATIC(FASTQ.out.fastq)
-        FASTQC(TRIMMOMATIC.out.trimmed_reads)
+        FASTQC_TRIMMED(TRIMMOMATIC.out.trimmed_reads)
         // Same Ensembl release for both reference files
         DOWNLOAD_TRANSCRIPTOME()
         DOWNLOAD_MOUSE_ANNOTATION()
