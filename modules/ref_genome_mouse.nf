@@ -7,7 +7,7 @@ process REF_GENOME_MOUSE {
 
     output:
     path "gentrome.fa.gz", emit: gentrome
-    path "decoy.txt", emit: decoy
+    path "decoys.txt", emit: decoy
 
     script:
     """
