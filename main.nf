@@ -61,7 +61,7 @@ workflow {
         BUILD_TX2GENE(DOWNLOAD_MOUSE_ANNOTATION.out.annotation,
                       DOWNLOAD_TRANSCRIPTOME.out.transcriptome)
 
-        QUANTIFICATION(TRIMMOMATIC.out.trimmed_reads, SALMON_INDEX.index)
+        QUANTIFICATION(TRIMMOMATIC.out.trimmed_reads, SALMON_INDEX.out.index)
 
     } else {
         error "Unknown study accession: ${params.study_accession}"
