@@ -22,8 +22,6 @@ process QUANTIFICATION {
         -2 ${reads[1]} \\
         -p ${task.cpus} \\
         --gcBias \\
-        #--seqBias \\
-        #--numBootstraps 30 \\
         --validateMappings \\
         -o ${new_name}_quant
 
