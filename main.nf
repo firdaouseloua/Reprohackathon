@@ -55,7 +55,7 @@ workflow {
         // Build the index once for all samples
         SALMON_INDEX(REF_GENOME_MOUSE.out.gentrome, REF_GENOME_MOUSE.out.decoy)
 
-        QUANTIFICATION(TRIMMOMATIC.out.trimmed_reads, SALMON_INDEX.out.index)
+        QUANTIFICATION(FASTQ.out.fastq, SALMON_INDEX.out.index)
 
     } else {
         error "Unknown study accession: ${params.study_accession}"
