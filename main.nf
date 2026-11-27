@@ -48,14 +48,14 @@ workflow {
         FASTQ(metadata)
         FASTQC(FASTQ.out.fastq)
 
-        //TRIMMOMATIC(FASTQ.out.fastq)
-        //FASTQC_TRIMMED(TRIMMOMATIC.out.trimmed_reads)
+        TRIMMOMATIC(FASTQ.out.fastq)
+        FASTQC_TRIMMED(TRIMMOMATIC.out.trimmed_reads)
         // Same Ensembl release for both reference files
         REF_GENOME_MOUSE()
         // Build the index once for all samples
         SALMON_INDEX(REF_GENOME_MOUSE.out.gentrome, REF_GENOME_MOUSE.out.decoy)
 
-        QUANTIFICATION(FASTQ.out.fastq, SALMON_INDEX.out.index)
+        QUANTIFICATION(TRIMMOMATIC.out.trimmed_reads, SALMON_INDEX.out.index)
 
     } else {
         error "Unknown study accession: ${params.study_accession}"
